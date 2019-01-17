@@ -46,7 +46,7 @@ const API = {
 						}
 					},
 					requestTemplates: {
-						'application/json': "{\n  \authPrincipalId\: \"$context.authorizer.principalId\",\n  \authTenantId\: \"$context.authorizer.tenantId\",\n  \jwt\: \"$context.authorizer.jwt\",\n  \statusCode\: 200\n}"
+						'application/json': "{\n  \authPrincipalId\: \"$context.authorizer.principalId\",\n  \authTenantId\: \"$context.authorizer.companyId\",\n  \jwt\: \"$context.authorizer.jwt\",\n  \statusCode\: 200\n}"
 					},
 					passthroughBehavior: "when_no_match",
 					type: "mock"
