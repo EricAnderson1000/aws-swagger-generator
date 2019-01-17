@@ -7,7 +7,7 @@ const path = require('path')
 const FILE_FILTER = 'swagger-api.js'
 const FILE_EXCLUDE = 'common.swagger-api.js'
 
-async function run() {
+async function build() {
 
 	console.log('Processing.....')
 
@@ -27,7 +27,6 @@ async function run() {
 
 	const ymlOutput = yaml.safeDump(doc)
 	console.log('--- New File --- \n', ymlOutput, '\n--------')
-
 }
 
 function removeQuotes(doc) {
@@ -63,4 +62,9 @@ async function findApiFiles(startPath, filter, exclude) {
 	})
 
 	return found
+}
+
+module.exports = {
+	build,
+	findApiFiles,
 }
