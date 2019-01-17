@@ -1,0 +1,10 @@
+{
+  "name": "aws-swagger-generator",
+  "version": "0.0.1",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "js-yaml": "^3.12.1",
+    "path": "^0.12.7"
+  }
+}
