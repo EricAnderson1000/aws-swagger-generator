@@ -37,7 +37,6 @@ function removeQuotes(doc) {
 
 }
 
-
 async function findApiFiles(startPath, filter, exclude) {
 
 	if ( ! fs.existsSync(startPath) ){
@@ -65,7 +64,3 @@ async function findApiFiles(startPath, filter, exclude) {
 
 	return found
 }
-
-
-
-run()
