@@ -3,20 +3,29 @@
 const yaml = require('js-yaml')
 const fs   = require('fs')
 const path = require('path')
+const readdir = require('readdir-absolute');
 
+const { BASE_SWAGGER } = require('./constants.js')
 const FILE_FILTER = 'swagger-api.js'
 const FILE_EXCLUDE = 'common.swagger-api.js'
 
-async function build() {
+async function build(baseSwagger) {
 
 	console.log('Processing.....')
+	let doc = BASE_SWAGGER
 
-	//Load in Base YML file
-	const file = fs.readFileSync('/Users/ericanderson/Development/opensource/aws-swagger-generator/example/swager/swagger_base.yml', 'utf8')
-	var doc = yaml.safeLoad(file)
+	//Load in Base YML file if available
+	if ( baseSwagger ) {
+		const file = fs.readFileSync(baseSwagger, 'utf8')
+		doc = yaml.safeLoad(file)
+		console.log('Found base swagger')
+	}
+
+	const workingDirectory = fs.realpathSync('./')
 
 	//Find all files that end with swagger-api.js and add to Javascript Object
-	const apiFiles = await findApiFiles('/Users/ericanderson/Development/opensource/aws-swagger-generator', FILE_FILTER, FILE_EXCLUDE)
+	const apiFiles = await findApiFiles(workingDirectory, FILE_FILTER, FILE_EXCLUDE)
+	// console.log('Found Files', apiFiles)
 	apiFiles.forEach( file => {
 		const { API } = require(file)
 		doc = {
@@ -26,14 +35,18 @@ async function build() {
 	})
 
 	const ymlOutput = yaml.safeDump(doc)
-	console.log('--- New File --- \n', ymlOutput, '\n--------')
+	fs.writeFile('./swagger-new.yml', ymlOutput, function (err) {
+		if (err) {
+			return console.log(err);
+		}
+		console.log('Complete')
+	})
 }
 
 function removeQuotes(doc) {
 
-	var docString = JSON.stringify(doc, null, "\t")
+	let docString = JSON.stringify(doc, null, "\t")
 	return docString.replace(/\"([^(\")"]+)\":/g,"$1:");  //This will remove all the quotes
-
 }
 
 async function findApiFiles(startPath, filter, exclude) {
@@ -43,7 +56,7 @@ async function findApiFiles(startPath, filter, exclude) {
 		return
 	}
 
-	var files = fs.readdirSync(startPath);
+	let files = fs.readdirSync(startPath)
 	const found = []
 
 	files.forEach( async file => {
@@ -56,12 +69,16 @@ async function findApiFiles(startPath, filter, exclude) {
 				found.push(...result)
 			}
 		}
-		else if (filename.indexOf(filter) >= 0 && filename.indexOf(exclude) <=0) {
+		else if (contains(file, filter) && ( ! contains(file, exclude))) {
 			found.push(filename)
 		}
 	})
 
 	return found
+}
+
+function contains(filename, value) {
+	return (filename.indexOf(value) >= 0)
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 {
   "name": "aws-swagger-generator",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "A JavaScript (So far) library to collect and generate AWS Swagger API definitions",
   "license": "SEE LICENSE IN LICENSE",
   "main": "./node/parse-javascript-api.js",
@@ -16,9 +16,11 @@
     "url": "https://github.com/EricAnderson1000/aws-swagger-generator/issues"
   },
   "dependencies": {
+    "bluebird": "^3.5.3",
     "fs": "^0.0.1-security",
     "js-yaml": "^3.12.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "readdir-absolute": "^1.0.1"
   },
   "devDependencies": {
     "jest": "^23.6.0"
