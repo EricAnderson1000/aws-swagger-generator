@@ -21,4 +21,4 @@ if (args.mode === MODE_JS) {
 	return
 }
 
-throw 'Mode ' + args.mode ' is unknown'
+throw 'Mode ' + args.mode + ' is unknown'
