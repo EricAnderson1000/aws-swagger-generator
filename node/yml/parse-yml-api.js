@@ -8,7 +8,7 @@ const FILE_FILTER = 'swagger-api.yml'
 const FILE_EXCLUDE = 'base.swagger-api.yml'
 
 
-async function build(path) {
+async function buildYML(path) {
 
 	console.log('Processing.....')
 	const workingDirectory = fs.realpathSync(path)
@@ -56,5 +56,5 @@ async function build(path) {
 
 
 module.exports = {
-	build,
+	buildYML,
 }
