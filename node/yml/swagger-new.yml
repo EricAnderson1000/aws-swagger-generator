@@ -1,0 +1,237 @@
+AWSTemplateFormatVersion: 2010-09-09T00:00:00.000Z
+Transform:
+  - 'AWS::Serverless-2016-10-31'
+paths:
+  '/assets/{id}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+    get:
+      consumes:
+        - application/json;charset=UTF-8
+      produces:
+        - application/json;charset=UTF-8
+      responses:
+        '200':
+          description: 200 OK
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+        '400':
+          description: 400 Bad Request
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+        '401':
+          description: 401 Unauthorized
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+        '403':
+          description: 403 Forbidden
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+        '404':
+          description: 404 Not Found
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+        '500':
+          description: 500 Internal Server Error
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+      security:
+        - ApiJwtAuthorizer: []
+      x-amazon-apigateway-request-validator: Validate query string parameters and headers
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        credentials:
+          'Fn::Sub': >-
+            arn:aws:iam::${AWS::AccountId}:role/${GlobalNamespace}-dam-api-invoker
+        type: aws
+        uri:
+          'Fn::Sub': >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AssetRetrievalHandler.Arn}/invocations
+        requestTemplates:
+          application/json: |-
+            {
+              "authPrincipalId": "$context.authorizer.principalId",
+              "authTenantId": "$context.authorizer.tenantId",
+              "jwt": "$context.authorizer.jwt",
+              "id": "$util.escapeJavaScript($input.params('id'))"
+            }
+        passthroughBehavior: never
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+          '^.*statusCode":400.*':
+            statusCode: 400
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            responseTemplates:
+              application/json: >-
+                #set($errorMessageObj=$util.parseJson($input.path('$.errorMessage'))){"errorName":"$errorMessageObj.name","message":"$errorMessageObj.message"}
+          '^.*statusCode":401.*':
+            statusCode: 401
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            responseTemplates:
+              application/json: >-
+                #set($errorMessageObj=$util.parseJson($input.path('$.errorMessage'))){"errorName":"$errorMessageObj.name","message":"$errorMessageObj.message"}
+          '^.*statusCode":403.*':
+            statusCode: 403
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            responseTemplates:
+              application/json: >-
+                #set($errorMessageObj=$util.parseJson($input.path('$.errorMessage'))){"errorName":"$errorMessageObj.name","message":"$errorMessageObj.message"}
+          '^.*statusCode":404.*':
+            statusCode: 404
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            responseTemplates:
+              application/json: >-
+                #set($errorMessageObj=$util.parseJson($input.path('$.errorMessage'))){"errorName":"$errorMessageObj.name","message":"$errorMessageObj.message"}
+          '^(?!.*statusCode":400.*)(?!.*statusCode":401.*)(?!.*statusCode":403.*)(?!.*statusCode":404.*).+':
+            statusCode: 500
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            responseTemplates:
+              application/json: >-
+                #set($errorMessageObj=$util.parseJson($input.path('$.errorMessage'))){"errorName":"$errorMessageObj.name","message":"$errorMessageObj.message"}
+    delete:
+      consumes:
+        - application/json;charset=UTF-8
+      produces:
+        - application/json;charset=UTF-8
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+        '400':
+          description: 400 Bad Request
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+        '401':
+          description: 401 Unauthorized
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+        '403':
+          description: 403 Forbidden
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+        '404':
+          description: 404 Not Found
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+      security:
+        - ApiJwtAuthorizer: []
+      x-amazon-apigateway-request-validator: Validate query string parameters and headers
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        credentials:
+          'Fn::Sub': >-
+            arn:aws:iam::${AWS::AccountId}:role/${GlobalNamespace}-dam-api-invoker
+        type: aws
+        uri:
+          'Fn::Sub': >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AssetDeleteHandler.Arn}/invocations
+        requestTemplates:
+          application/json: |-
+            {
+              "authPrincipalId": "$context.authorizer.principalId",
+              "authTenantId": "$context.authorizer.tenantId",
+              "jwt": "$context.authorizer.jwt",
+              "id": "$util.escapeJavaScript($input.params('id'))"
+            }
+        passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+          ^401:
+            statusCode: 401
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+          ^403:
+            statusCode: 403
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+          ^404:
+            statusCode: 404
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+          ^(?!401)(?!403)(?!404).+:
+            statusCode: 400
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+    options:
+      consumes:
+        - application/json;charset=UTF-8
+      produces:
+        - application/json;charset=UTF-8
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: '200'
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: '''GET,DELETE,OPTIONS'''
+              method.response.header.Access-Control-Allow-Headers: >-
+                'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock

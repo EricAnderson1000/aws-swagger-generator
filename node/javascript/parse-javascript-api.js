@@ -5,7 +5,7 @@ const fs   = require('fs')
 const path = require('path')
 const readdir = require('readdir-absolute');
 
-const { BASE_SWAGGER } = require('./constants.js')
+const { BASE_SWAGGER } = require('../constants.js')
 const FILE_FILTER = 'swagger-api.js'
 const FILE_EXCLUDE = 'common.swagger-api.js'
 
@@ -64,7 +64,7 @@ async function findApiFiles(startPath, filter, exclude) {
 		const stat = fs.lstatSync(filename);
 
 		if (stat.isDirectory()) {
-			const result = await findApiFiles(filename, filter)
+			const result = await findApiFiles(filename, filter, exclude)
 			if (result) {
 				found.push(...result)
 			}

@@ -1,6 +1,6 @@
 'use strict'
 
-const { OPTIONS } = require('./common.swagger-api')
+const { OPTIONS } = require('../common.swagger-api')
 
 /**
  * See https://api.nasa.gov/
