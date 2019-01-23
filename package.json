@@ -1,6 +1,6 @@
 {
   "name": "aws-swagger-generator",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A JavaScript (So far) library to collect and generate AWS Swagger API definitions",
   "license": "SEE LICENSE IN LICENSE",
   "main": "./node/parse-javascript-api.js",
