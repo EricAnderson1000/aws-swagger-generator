@@ -1,7 +1,7 @@
 {
   "name": "@inferno/aws-swagger-generator",
   "version": "0.0.7",
-  "description": "A JavaScript (So far) library to collect and generate AWS Swagger API definitions",
+  "description": "A JavaScript AND YML (So far) library to collect, aggregrate and generate AWS Swagger API definitions from many independant files",
   "license": "SEE LICENSE IN LICENSE",
   "main": "./node/parse-javascript-api.js",
   "repository": {
