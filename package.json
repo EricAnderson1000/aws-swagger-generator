@@ -1,5 +1,5 @@
 {
-  "name": "aws-swagger-generator",
+  "name": "@inferno/aws-swagger-generator",
   "version": "0.0.7",
   "description": "A JavaScript (So far) library to collect and generate AWS Swagger API definitions",
   "license": "SEE LICENSE IN LICENSE",
